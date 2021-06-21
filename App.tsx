@@ -45,7 +45,8 @@ import Map from './src/Layouts/Map';
   return (
     <View style={styles.container}>
       <Map/>
-      <StatusBar style="auto" />
     </View>
   );
 }
+
+export default App;
