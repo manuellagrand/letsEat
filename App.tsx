@@ -44,7 +44,7 @@ import Map from './src/Layouts/Map';
 
   return (
     <View style={styles.container}>
-      <Text>Open up App.tsx to start working on your app!</Text>
+      <Map/>
       <StatusBar style="auto" />
     </View>
   );
