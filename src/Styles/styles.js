@@ -7,8 +7,6 @@ export const AppStyle = StyleSheet.create({
     container: {
         flex: 1,
         backgroundColor: '#fff',
-        alignItems: 'center',
-        justifyContent: 'center',
       },
 })
 
@@ -35,3 +33,14 @@ export const SplashscreenStyle = StyleSheet.create({
         marginVertical: 20
     }
 });
+
+/* Map */
+
+export const MapStyle = StyleSheet.create({
+    container: {
+        flex: 1,
+        justifyContent: 'center',        
+        backgroundColor: '#ecf0f1',
+        padding: 8,
+    }
+})
