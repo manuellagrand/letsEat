@@ -1,19 +1,24 @@
 import { StatusBar } from 'expo-status-bar';
 import React, { useState, useEffect } from 'react';
-import { Text, View } from 'react-native';
+import { Text, View, BackHandler } from 'react-native';
 import { AppStyle as styles } from './src/Styles/styles';
 import SplashScreen from './src/Layouts/SplashScreen';
 import * as Location from 'expo-location';
+import Map from './src/Layouts/Map';
 
-export default function App() {
+ const App = () => {
   const [isLoading, setIsloading ] = useState(true);
   const [errorMsg, setErrorMsg] = useState("");
-  
+
   const getPermission = async () => {
     let { status } = await Location.requestForegroundPermissionsAsync()
     
-    if (status !== 'granted') setErrorMsg('Permission to access location was denied');
+    if (status !== 'granted') {
+      setErrorMsg('Permission to access location was denied');
+      BackHandler.exitApp();
+    }
   }
+
 
   const Loading = async () => {
     getPermission()
