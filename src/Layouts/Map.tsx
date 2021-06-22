@@ -136,12 +136,30 @@ const Map: FC<IMap> = (props: IMap, children: PropsWithChildren<any>): ReactElem
                 style={{ flex: 1 }}
                 region={region}
                 onRegionChangeComplete={region => setCurrentLocation(region)}
-                //showsUserLocation={true}
-                //userInterfaceStyle='dark'
-                //followsUserLocation={true}
+                showsUserLocation={true}
+                showsMyLocationButton={true}
+                followsUserLocation={true}
                 rotateEnabled={true}
+                onPanDrag={(event) => {
+                    event.preventDefault()
+                    console.log("event: ", event.nativeEvent)
+                }}
+                onPress={(event) => {
+                    event.preventDefault()
+                    console.log("event: ", event.nativeEvent)
+                }}
             >
-                {/*<Marker data={restaurant ?? []}/>*/}
+                {
+                    restaurants?.map((element, id) => {
+                        return(
+                            <Marker 
+                            latitude={element.latitude} 
+                            longitude={element.longitude}
+                            key={`Marker_${element.latitude}_${id}`}/>
+                        )
+                    })
+                }
+                
             </MapView>
 
         </SafeAreaView>)
