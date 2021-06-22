@@ -29,9 +29,9 @@ const Map: FC<IMap> = (props: IMap, children: PropsWithChildren<any>): ReactElem
         latitude: 0,
         longitude: 0,
     })
-    const [locationId, setLocationId] = useState(-1);
 
-    const [restaurant, setRestaurant] = useState(Array<any>());
+    const [restaurants, setRestaurants] = useState(Array<any>());
+    
     const getCurrentPos = async () => {
         
         let { coords: {latitude, longitude} } = await Location.getCurrentPositionAsync({})
@@ -72,13 +72,13 @@ const Map: FC<IMap> = (props: IMap, children: PropsWithChildren<any>): ReactElem
             const message = `an Error occured: ${error}`;
             throw new Error(error);
         }
-        setRestaurant(coordinate);
+        setRestaurants(coordinate);
     }
     
     const watchPosition = async () => {
        const loc =  await Location.watchPositionAsync(
             {
-              distanceInterval: 1,
+              distanceInterval: 20,
               timeInterval: 10000
             },
             (newLocation) => {
