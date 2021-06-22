@@ -1,11 +1,12 @@
-import React, { useState, useEffect, FC, ReactChildren, PropsWithChildren } from 'react';
-import MapView, { Marker } from 'react-native-maps';
+import React, { useState, useEffect, FC, ReactChildren, PropsWithChildren, SyntheticEvent } from 'react';
+import MapView from 'react-native-maps';
 import * as Location from 'expo-location';
 import { MapStyle as styles } from '../Styles/styles';
 import { Text, View, SafeAreaView } from 'react-native';
 import { ReactElement } from 'react';
 import { useRef } from 'react';
 import axios from 'axios';
+import Marker from '../Components/Marker';
 
 interface IMap {
     userLocation?: boolean,
@@ -50,8 +51,8 @@ const Map: FC<IMap> = (props: IMap, children: PropsWithChildren<any>): ReactElem
     }
 
     const getRestaurant = async () => {
-
         let coordinate: any = []
+
         try {
             const response = await axios.get(`https://xlmd94l53b.execute-api.eu-west-2.amazonaws.com/api?lat=${currentLocation.latitude}&long=${currentLocation.longitude}`)
             const {data} = response;
@@ -88,10 +89,15 @@ const Map: FC<IMap> = (props: IMap, children: PropsWithChildren<any>): ReactElem
                 longitude: coords.longitude,
                 latitudeDelta: 0.045,
                 longitudeDelta: 0.045
-              };
+              };                            
               setRegion(region)
+              setCurrentLocation({
+                  latitude: region.latitude,
+                  longitude: region.longitude,
+              })
             },
           );
+          
           return loc;
     }
 
@@ -105,28 +111,24 @@ const Map: FC<IMap> = (props: IMap, children: PropsWithChildren<any>): ReactElem
         }
     }*/
 
+    
+
     useEffect(() => {    
         console.log("will mount");
-        //async () => {
+        const subscribeToUserPos = async () => {
             //if (await enableLocation() === false) {
-                getCurrentPos();
-                console.log("position: ", currentLocation);
-                watchPosition();
+                await getCurrentPos();
+                await watchPosition();
+                
             //}
-        //}
-
-        return () => {
-            console.log("will unmount");
         }
+
+        subscribeToUserPos();
     }, [])
 
     useEffect(() => {
         console.log('DidUpdate');
-
-        const id = setInterval(getRestaurant(), 50000);
-        return () => {
-            clearInterval(id);
-        }
+        getRestaurant();
     }, [currentLocation])
 
     
@@ -142,11 +144,9 @@ const Map: FC<IMap> = (props: IMap, children: PropsWithChildren<any>): ReactElem
                 rotateEnabled={true}
                 onPanDrag={(event) => {
                     event.preventDefault()
-                    console.log("event: ", event.nativeEvent)
                 }}
                 onPress={(event) => {
                     event.preventDefault()
-                    console.log("event: ", event.nativeEvent)
                 }}
             >
                 {
